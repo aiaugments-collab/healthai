@@ -98,7 +98,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // Push content to the right when nav is expanded. This is kinda a
   // hacky way to do it, but it works
-  const marginLeft = isMobile ? "0" : navExpanded ? "16rem" : "5rem";
+  const marginLeft = isMobile ? "0" : navExpanded ? "18rem" : "5rem";
   const [userId, setUserId] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const broadcastChannelRef = useRef<any>(null);

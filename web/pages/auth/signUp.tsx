@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { Mail, Lock, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { signUp } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Head from "next/head";
+import AuthLayout from "@/components/auth/AuthLayout";
+import AuthInput from "@/components/auth/AuthInput";
+import AuthButton from "@/components/auth/AuthButton";
+import AuthLink from "@/components/auth/AuthLink";
+import AuthDivider from "@/components/auth/AuthDivider";
+import AuthCheckbox from "@/components/auth/AuthCheckbox";
 
 export default function SignUp() {
   const router = useRouter();
@@ -16,23 +19,90 @@ export default function SignUp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+    terms?: string;
+  }>({});
+
+  const validateForm = () => {
+    const newErrors: {
+      email?: string;
+      password?: string;
+      confirmPassword?: string;
+      terms?: string;
+    } = {};
+    
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      newErrors.password = "Password must contain uppercase, lowercase, and number";
+    }
+    
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!acceptTerms) {
+      newErrors.terms = "You must accept the terms and conditions";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const getPasswordStrength = () => {
+    if (!password) return 0;
+    let strength = 0;
+    if (password.length >= 8) strength += 25;
+    if (/[a-z]/.test(password)) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/\d/.test(password)) strength += 25;
+    return strength;
+  };
+
+  const getPasswordStrengthColor = () => {
+    const strength = getPasswordStrength();
+    if (strength < 50) return "bg-red-500";
+    if (strength < 75) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+
+  const getPasswordStrengthText = () => {
+    const strength = getPasswordStrength();
+    if (strength < 50) return "Weak";
+    if (strength < 75) return "Good";
+    return "Strong";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+    
+    if (!validateForm()) {
       return;
     }
+
     try {
       setIsSubmitting(true);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { user, session } = await signUp(email, password);
-      toast.success("Signed up successfully! Redirecting...");
+      toast.success("Account created successfully! Welcome to Health AI!");
       router.push("/home");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      toast.error(error.message || "Sign up failed");
+      toast.error(error.message || "Sign up failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -41,161 +111,152 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>Health AI | Sign Up</title>
+        <title>Health AI | Create Account</title>
         <meta
           name="description"
-          content="Create an account to track and manage your health with Health AI."
+          content="Join Health AI to start tracking and managing your health journey with intelligent insights."
         />
       </Head>
-      <div className="h-screen flex flex-col sm:flex-row">
-        <style jsx global>{`
-          html {
-            scroll-behavior: smooth;
-          }
+      
+      <AuthLayout
+        title="Create your account"
+        subtitle="Join thousands of users taking control of their health"
+        rightSideContent={{
+          title: "Health AI",
+          subtitle: "Start your health journey today",
+          features: [
+            "Comprehensive health tracking and analytics",
+            "AI-powered insights and recommendations",
+            "Secure data with enterprise-grade encryption"
+          ]
+        }}
+      >
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <AuthInput
+            type="email"
+            label="Email address"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) setErrors(prev => ({...prev, email: undefined}));
+            }}
+            error={errors.email}
+            icon={<Mail className="w-4 h-4" />}
+            required
+          />
 
-          html,
-          body {
-            overscroll-behavior: none;
-          }
-        `}</style>
-        <div className="bg-primary text-white w-full sm:w-1/2 flex-1 flex flex-col p-8 sm:py-12 sm:px-10">
-          <div className="flex flex-col justify-between h-full">
-            <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold">Health AI</h1>
-            </div>
-            <div className="mt-auto">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-4">
-                Track. <br />
-                Understand. <br />
-                Take Control of Your Health.
-              </h2>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-secondary w-full sm:w-1/2 flex-1 p-8 sm:py-12 sm:px-10 relative flex flex-col">
-          <div className="absolute top-4 right-4">
-            <Link
-              href="/auth/login"
-              className="border border-black px-4 py-1 rounded text-sm font-medium hover:text-white hover:bg-accent transition"
-            >
-              Login
-            </Link>
-          </div>
-
-          <div className="flex flex-col justify-center flex-1 max-w-md w-full mx-auto mt-8 sm:mt-0">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-              Create Account
-            </h2>
-
-            <form onSubmit={handleSubmit}>
-              <Input
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleSubmit(e);
-                  }
-                }}
-                className="w-full mb-4 px-4 py-2 rounded border border-gray-800 focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-foreground"
-                required
-              />
-
-              <div className="relative mb-4">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleSubmit(e);
-                    }
-                  }}
-                  className="w-full mb-4 px-4 py-2 rounded border border-gray-800 focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-foreground"
-                  required
-                />
-                <Button
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  variant="none"
-                  type="button"
-                  aria-label="Toggle password visibility"
-                  className="absolute inset-y-2 right-2 flex items-center cursor-pointer h-5 w-5"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  tabIndex={-1}
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5 text-gray-600" />
-                  ) : (
-                    <Eye className="w-5 h-5 text-gray-600" />
-                  )}
-                </Button>
+          <div className="space-y-2">
+            <AuthInput
+              type="password"
+              label="Password"
+              placeholder="Create a strong password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password) setErrors(prev => ({...prev, password: undefined}));
+              }}
+              error={errors.password}
+              showPasswordToggle
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              icon={<Lock className="w-4 h-4" />}
+              required
+            />
+            
+            {password && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600 dark:text-gray-400">Password strength</span>
+                  <span className={`font-medium ${
+                    getPasswordStrength() < 50 ? 'text-red-600' :
+                    getPasswordStrength() < 75 ? 'text-yellow-600' : 'text-green-600'
+                  }`}>
+                    {getPasswordStrengthText()}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full transition-all duration-300 ${getPasswordStrengthColor()}`}
+                    style={{ width: `${getPasswordStrength()}%` }}
+                  ></div>
+                </div>
               </div>
-
-              <div className="relative mb-6">
-                <Input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleSubmit(e);
-                    }
-                  }}
-                  className="w-full mb-4 px-4 py-2 rounded border border-gray-800 focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-foreground"
-                  required
-                />
-                <Button
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  variant="none"
-                  aria-label="Toggle confirm password visibility"
-                  type="button"
-                  className="absolute inset-y-2 right-2 flex items-center cursor-pointer h-5 w-5"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  tabIndex={-1}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="w-5 h-5 text-gray-600" />
-                  ) : (
-                    <Eye className="w-5 h-5 text-gray-600" />
-                  )}
-                </Button>
-              </div>
-
-              <Button
-                variant="default"
-                aria-label="Sign Up"
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full cursor-pointer bg-primary hover:bg-[#2c3f59] text-white py-2 rounded font-medium transition-all flex items-center justify-center gap-2"
-              >
-                {isSubmitting && <Loader className="animate-spin w-5 h-5" />}
-                {isSubmitting ? "Signing up..." : "Sign up with Email"}
-              </Button>
-            </form>
-
-            <p className="text-sm text-center mt-3 text-black/90">
-              By clicking continue, you agree to our{" "}
-              <Link href="/terms" className="underline cursor-pointer">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="underline cursor-pointer">
-                Privacy Policy
-              </Link>
-              .
-            </p>
+            )}
           </div>
+
+          <AuthInput
+            type="password"
+            label="Confirm password"
+            placeholder="Confirm your password"
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              if (errors.confirmPassword) setErrors(prev => ({...prev, confirmPassword: undefined}));
+            }}
+            error={errors.confirmPassword}
+            showPasswordToggle
+            showPassword={showConfirmPassword}
+            onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+            icon={password && confirmPassword && password === confirmPassword ? 
+              <CheckCircle className="w-4 h-4 text-green-500" /> : 
+              <Lock className="w-4 h-4" />
+            }
+            required
+          />
+
+          <div className="space-y-2">
+            <AuthCheckbox
+              id="terms"
+              checked={acceptTerms}
+              onChange={(checked) => {
+                setAcceptTerms(checked);
+                if (errors.terms) setErrors(prev => ({...prev, terms: undefined}));
+              }}
+              required
+              label={
+                <>
+                  I agree to the{" "}
+                  <AuthLink href="/terms" variant="primary">
+                    Terms of Service
+                  </AuthLink>{" "}
+                  and{" "}
+                  <AuthLink href="/privacy" variant="primary">
+                    Privacy Policy
+                  </AuthLink>
+                </>
+              }
+            />
+            {errors.terms && (
+              <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1 ml-8">
+                <span className="w-1 h-1 bg-red-600 dark:bg-red-400 rounded-full"></span>
+                {errors.terms}
+              </p>
+            )}
+          </div>
+
+          <AuthButton
+            type="submit"
+            loading={isSubmitting}
+            loadingText="Creating account..."
+            fullWidth
+            size="lg"
+          >
+            Create account
+          </AuthButton>
+        </form>
+
+        <AuthDivider />
+
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Already have an account?{" "}
+            <AuthLink href="/auth/login" variant="primary">
+              Sign in here
+            </AuthLink>
+          </p>
         </div>
-      </div>
+      </AuthLayout>
     </>
   );
 }

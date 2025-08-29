@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { Lock, CheckCircle, Shield } from "lucide-react";
 import { toast } from "sonner";
 import Head from "next/head";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabaseClient";
+import AuthLayout from "@/components/auth/AuthLayout";
+import AuthInput from "@/components/auth/AuthInput";
+import AuthButton from "@/components/auth/AuthButton";
+import AuthLink from "@/components/auth/AuthLink";
 
 export default function UpdatePassword() {
   const router = useRouter();
@@ -15,20 +16,72 @@ export default function UpdatePassword() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState<{
+    password?: string;
+    confirmPassword?: string;
+  }>({});
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) {
-        toast.error("Session not found. Try requesting a new reset link.");
-        router.push("/auth/forgot");
+        toast.error("Session not found. Please request a new reset link.");
+        router.push("/auth/forgotPassword");
       }
     });
   }, [router]);
 
+  const validateForm = () => {
+    const newErrors: {
+      password?: string;
+      confirmPassword?: string;
+    } = {};
+    
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      newErrors.password = "Password must contain uppercase, lowercase, and number";
+    }
+    
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const getPasswordStrength = () => {
+    if (!password) return 0;
+    let strength = 0;
+    if (password.length >= 8) strength += 25;
+    if (/[a-z]/.test(password)) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/\d/.test(password)) strength += 25;
+    return strength;
+  };
+
+  const getPasswordStrengthColor = () => {
+    const strength = getPasswordStrength();
+    if (strength < 50) return "bg-red-500";
+    if (strength < 75) return "bg-yellow-500";
+    return "bg-green-500";
+  };
+
+  const getPasswordStrengthText = () => {
+    const strength = getPasswordStrength();
+    if (strength < 50) return "Weak";
+    if (strength < 75) return "Good";
+    return "Strong";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
+    
+    if (!validateForm()) {
       return;
     }
 
@@ -41,11 +94,11 @@ export default function UpdatePassword() {
         return;
       }
 
-      toast.success("Password updated! Redirecting...");
+      toast.success("Password updated successfully! Redirecting to your dashboard...");
       router.push("/home");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong.");
+      toast.error(err.message || "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -54,123 +107,125 @@ export default function UpdatePassword() {
   return (
     <>
       <Head>
-        <title>Health AI | Update Password</title>
+        <title>Health AI | Set New Password</title>
         <meta
           name="description"
-          content="Set a new password for your Health AI account."
+          content="Create a new secure password for your Health AI account."
         />
       </Head>
-      <div className="h-screen flex flex-col sm:flex-row">
-        <style jsx global>{`
-          html {
-            scroll-behavior: smooth;
-          }
-
-          html,
-          body {
-            overscroll-behavior: none;
-          }
-        `}</style>
-        <div className="bg-secondary w-full sm:w-1/2 flex-1 p-8 sm:py-12 sm:px-10 flex flex-col relative">
-          <div className="absolute top-4 left-4">
-            <Link
-              href="/auth/login"
-              className="border border-black px-4 py-1 rounded text-sm font-medium hover:text-white hover:bg-accent transition"
-            >
-              Back to Login
-            </Link>
-          </div>
-
-          <div className="flex flex-col justify-center flex-1 max-w-md w-full mx-auto mt-12 sm:mt-0">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-              Set New Password
-            </h2>
-
-            <form onSubmit={handleSubmit}>
-              <div className="relative mb-4">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="New Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full mb-4 px-4 py-2 rounded border border-gray-800 focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-foreground"
-                />
-                <Button
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  variant="none"
-                  aria-label="Toggle password visibility"
-                  className="absolute inset-y-2 right-2 flex items-center cursor-pointer h-5 w-5"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  tabIndex={-1}
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5 text-gray-600" />
-                  ) : (
-                    <Eye className="w-5 h-5 text-gray-600" />
-                  )}
-                </Button>
+      
+      <AuthLayout
+        title="Set new password"
+        subtitle="Create a strong password to secure your account"
+        showBackButton
+        backButtonText="Back to sign in"
+        backButtonHref="/auth/login"
+        rightSideContent={{
+          title: "Health AI",
+          subtitle: "Almost there!",
+          features: [
+            "Your account security is our priority",
+            "Choose a strong, unique password",
+            "Access all your health data securely"
+          ]
+        }}
+      >
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <div>
+                <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                  Password Requirements
+                </p>
+                <p className="text-xs text-blue-600 dark:text-blue-300 mt-1">
+                  At least 8 characters with uppercase, lowercase, and numbers
+                </p>
               </div>
-
-              <div className="relative mb-6">
-                <Input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="w-full mb-4 px-4 py-2 rounded border border-gray-800 focus:outline-none focus:ring-2 focus:ring-primary text-foreground placeholder:text-foreground"
-                />
-                <Button
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  variant="none"
-                  aria-label="Toggle password visibility"
-                  className="absolute inset-y-2 right-2 flex items-center cursor-pointer h-5 w-5"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  tabIndex={-1}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="w-5 h-5 text-gray-600" />
-                  ) : (
-                    <Eye className="w-5 h-5 text-gray-600" />
-                  )}
-                </Button>
-              </div>
-
-              <Button
-                type="submit"
-                variant="default"
-                disabled={isSubmitting}
-                className="cursor-pointer w-full bg-primary hover:bg-[#2c3f59] text-white py-2 rounded font-medium transition-all flex items-center justify-center gap-2"
-              >
-                {isSubmitting && <Loader className="animate-spin w-5 h-5" />}
-                {isSubmitting ? "Updating..." : "Update Password"}
-              </Button>
-            </form>
-          </div>
-        </div>
-
-        <div className="bg-primary w-full sm:w-1/2 flex-1 p-8 sm:py-12 sm:px-10 flex flex-col">
-          <div className="flex flex-col justify-between h-full">
-            <div className="text-right mb-8">
-              <h1 className="text-3xl sm:text-4xl font-bold text-white">
-                Health AI
-              </h1>
-            </div>
-            <div className="mt-auto text-right">
-              <h2 className="text-xl sm:text-2xl font-semibold text-white leading-snug">
-                Reset.
-                <br />
-                Renew.
-                <br />
-                Reclaim Control of Your Health.
-              </h2>
             </div>
           </div>
+
+          <div className="space-y-2">
+            <AuthInput
+              type="password"
+              label="New password"
+              placeholder="Enter your new password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password) setErrors(prev => ({...prev, password: undefined}));
+              }}
+              error={errors.password}
+              showPasswordToggle
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              icon={<Lock className="w-4 h-4" />}
+              required
+            />
+            
+            {password && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-600 dark:text-gray-400">Password strength</span>
+                  <span className={`font-medium ${
+                    getPasswordStrength() < 50 ? 'text-red-600' :
+                    getPasswordStrength() < 75 ? 'text-yellow-600' : 'text-green-600'
+                  }`}>
+                    {getPasswordStrengthText()}
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full transition-all duration-300 ${getPasswordStrengthColor()}`}
+                    style={{ width: `${getPasswordStrength()}%` }}
+                  ></div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <AuthInput
+            type="password"
+            label="Confirm new password"
+            placeholder="Confirm your new password"
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              if (errors.confirmPassword) setErrors(prev => ({...prev, confirmPassword: undefined}));
+            }}
+            error={errors.confirmPassword}
+            showPasswordToggle
+            showPassword={showConfirmPassword}
+            onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)}
+            icon={password && confirmPassword && password === confirmPassword ? 
+              <CheckCircle className="w-4 h-4 text-green-500" /> : 
+              <Lock className="w-4 h-4" />
+            }
+            required
+          />
+
+          <AuthButton
+            type="submit"
+            loading={isSubmitting}
+            loadingText="Updating password..."
+            fullWidth
+            size="lg"
+          >
+            Update password
+          </AuthButton>
+        </form>
+
+        <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Remember your password?{" "}
+              <AuthLink href="/auth/login" variant="primary">
+                Sign in here
+              </AuthLink>
+            </p>
+          </div>
         </div>
-      </div>
+      </AuthLayout>
     </>
   );
 }
