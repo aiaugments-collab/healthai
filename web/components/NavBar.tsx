@@ -13,9 +13,7 @@ import {
   FileText,
   Pill,
   X,
-  Activity,
-  Stethoscope,
-  Crown,
+
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { signOut } from "@/lib/auth";

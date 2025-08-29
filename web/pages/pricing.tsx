@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { Heart, Crown, Sparkles, Shield, MessageCircle, Calendar, FileText, Pill, BarChart3, Users, Headphones, Zap } from "lucide-react";
+import { Heart, Crown, Shield, MessageCircle, Calendar, FileText, BarChart3, Users } from "lucide-react";
 import PricingCard from "@/components/pricing/PricingCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

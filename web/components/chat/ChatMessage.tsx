@@ -114,7 +114,6 @@ const bubbleVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.3, ease: "easeOut" },
   },
 };
 
@@ -128,7 +127,7 @@ export default function ChatMessage({ role, text, timestamp, isTyping }: ChatMes
       setCopied(true);
       toast.success("Message copied to clipboard");
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch {
       toast.error("Failed to copy message");
     }
   };
@@ -138,6 +137,7 @@ export default function ChatMessage({ role, text, timestamp, isTyping }: ChatMes
       variants={bubbleVariants}
       initial="hidden"
       animate="visible"
+      transition={{ duration: 0.3 }}
       className={cn(
         "flex gap-3 group",
         isUser ? "flex-row-reverse" : "flex-row"

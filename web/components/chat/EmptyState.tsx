@@ -94,7 +94,7 @@ export default function EmptyState({ onSuggestedPrompt }: EmptyStateProps) {
                 className="text-left p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200 group"
               >
                 <span className="text-sm text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300">
-                  "{prompt}"
+                  &quot;{prompt}&quot;
                 </span>
               </motion.button>
             ))}

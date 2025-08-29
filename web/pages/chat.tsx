@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { chatWithHealthAI } from "@/lib/aiChat";
 import { getMedicationRemindersByUser } from "@/lib/medications";
 import { getAppointmentRemindersByUser } from "@/lib/appointmentReminders";
