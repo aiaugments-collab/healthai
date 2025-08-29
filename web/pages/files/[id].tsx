@@ -149,7 +149,7 @@ export default function FileViewPage() {
                 <Card className="shadow-lg m-0">
                   <CardContent className="p-0 m-0">
                     {file.file_type.startsWith("image") ? (
-                      // eslint-disable-next-line @next/next/no-img-element
+
                       <img
                         src={file.url}
                         alt={file.filename}

@@ -62,16 +62,18 @@ supabase.auth.onAuthStateChange((_, session) => {
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  // Wanna hide the nav bar on auth pages and landing page and 404
-  const authPaths = [
+  // Hide the nav bar on auth pages, landing page, 404, and public pages
+  const publicPaths = [
     "/",
-    "/auth/signUp",
+    "/auth/signUp", 
     "/auth/login",
     "/404",
     "/auth/forgotPassword",
     "/auth/updatePassword",
+    "/terms",
+    "/privacy",
   ];
-  const hideNav = authPaths.includes(router.pathname);
+  const hideNav = publicPaths.includes(router.pathname);
 
   const [navExpanded, setNavExpanded] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(false);
