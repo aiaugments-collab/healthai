@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Heart, Shield, Sparkles } from "lucide-react";
+import { ArrowLeft, Brain, Shield, Sparkles } from "lucide-react";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -24,12 +24,12 @@ export default function AuthLayout({
   backButtonText = "Back",
   backButtonHref = "/auth/login",
   rightSideContent = {
-    title: "Health AI",
-    subtitle: "Your intelligent health companion",
+    title: "HealthAI Enterprise",
+    subtitle: "Healthcare Intelligence Platform",
     features: [
-      "Track your health metrics effortlessly",
-      "Get personalized insights and recommendations",
-      "Secure, private, and always available"
+      "Enterprise-grade AI-powered diagnostics",
+      "Scalable healthcare analytics and insights",
+      "HIPAA-compliant security and compliance"
     ]
   }
 }: AuthLayoutProps) {
@@ -85,7 +85,7 @@ export default function AuthLayout({
               {/* Logo/Icon */}
               <div className="mb-8">
                 <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                  <Heart className="w-10 h-10 text-white" />
+                  <Brain className="w-10 h-10 text-white" />
                 </div>
                 <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
                   {rightSideContent.title}
@@ -103,7 +103,7 @@ export default function AuthLayout({
                       <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                         {index === 0 && <Shield className="w-4 h-4 text-white" />}
                         {index === 1 && <Sparkles className="w-4 h-4 text-white" />}
-                        {index === 2 && <Heart className="w-4 h-4 text-white" />}
+                        {index === 2 && <Brain className="w-4 h-4 text-white" />}
                       </div>
                       <p className="text-gray-700 dark:text-gray-200 font-medium">
                         {feature}

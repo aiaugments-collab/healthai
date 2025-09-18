@@ -9,11 +9,11 @@ export default function Document() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"
-          content="Health AI - Your health companion to track, understand, and manage your daily health seamlessly."
+          content="HealthAI Enterprise - Advanced AI-driven healthcare intelligence platform for healthcare organizations, delivering precision diagnostics and scalable digital health solutions."
         />
         <meta
           name="keywords"
-          content="health, tracking, AI, companion, wellness, Health AI"
+          content="healthcare AI, enterprise healthcare, digital health platform, healthcare intelligence, predictive analytics, clinical decision support, healthcare technology, medical AI"
         />
 
         {/* Favicon and App Icons */}
@@ -38,10 +38,10 @@ export default function Document() {
         <meta name="theme-color" content="#344966" />
 
         {/* Open Graph / Facebook */}
-        <meta property="og:title" content="Health AI" />
+        <meta property="og:title" content="HealthAI Enterprise" />
         <meta
           property="og:description"
-          content="Your health companion to track, understand, and manage your daily health seamlessly."
+          content="Enterprise-grade AI-powered healthcare intelligence platform delivering precision diagnostics and scalable digital health solutions for healthcare organizations."
         />
         <meta
           property="og:image"
@@ -49,14 +49,14 @@ export default function Document() {
         />
         <meta property="og:url" content="https://symptomsync.vercel.app" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Health AI" />
+        <meta property="og:site_name" content="HealthAI Enterprise" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Health AI" />
+        <meta name="twitter:title" content="HealthAI Enterprise" />
         <meta
           name="twitter:description"
-          content="Your health companion to track, understand, and manage your daily health seamlessly."
+          content="Enterprise-grade AI-powered healthcare intelligence platform delivering precision diagnostics and scalable digital health solutions."
         />
         <meta
           name="twitter:image"

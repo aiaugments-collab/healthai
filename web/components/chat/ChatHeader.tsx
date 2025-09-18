@@ -34,7 +34,7 @@ export default function ChatHeader({
         
         <div>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            Health AI Assistant
+            HealthAI Enterprise Assistant
           </h1>
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1">

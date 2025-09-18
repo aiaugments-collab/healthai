@@ -73,22 +73,25 @@ function Header({ user }: { user: unknown }) {
             <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <Brain className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900">Health AI</span>
+            <span className="text-xl font-bold text-gray-900">HealthAI Enterprise</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-              Features
+            <a href="#solutions" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+              Solutions
             </a>
-            <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-              How It Works
+            <a href="#platform" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+              Platform
+            </a>
+            <a href="#enterprise" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+              Enterprise
             </a>
             <Link href="/privacy" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-              Privacy
+              Security
             </Link>
             <Link href="/terms" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-              Terms
+              Compliance
             </Link>
           </nav>
 
@@ -109,7 +112,7 @@ function Header({ user }: { user: unknown }) {
                 </Link>
                 <Link href="/auth/signUp">
                   <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-2 rounded-full font-medium">
-                    Start for Free
+                    Request Demo
                   </Button>
                 </Link>
               </>
@@ -135,32 +138,39 @@ function Header({ user }: { user: unknown }) {
           >
             <nav className="flex flex-col gap-4">
               <a
-                href="#features"
+                href="#solutions"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-gray-600 hover:text-gray-900 transition-colors font-medium py-2"
               >
-                Features
+                Solutions
               </a>
               <a
-                href="#how-it-works"
+                href="#platform"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-gray-600 hover:text-gray-900 transition-colors font-medium py-2"
               >
-                How It Works
+                Platform
+              </a>
+              <a
+                href="#enterprise"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-gray-600 hover:text-gray-900 transition-colors font-medium py-2"
+              >
+                Enterprise
               </a>
               <Link
                 href="/privacy"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-gray-600 hover:text-gray-900 transition-colors font-medium py-2"
               >
-                Privacy
+                Security
               </Link>
               <Link
                 href="/terms"
                 onClick={() => setIsMenuOpen(false)}
                 className="text-gray-600 hover:text-gray-900 transition-colors font-medium py-2"
               >
-                Terms
+                Compliance
               </Link>
               <div className="flex flex-col gap-3 pt-4 border-t border-gray-200">
                 {user ? (
@@ -178,7 +188,7 @@ function Header({ user }: { user: unknown }) {
                     </Link>
                     <Link href="/auth/signUp">
                       <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 rounded-full font-medium">
-                        Start for Free
+                        Request Demo
                       </Button>
                     </Link>
                   </>
@@ -211,61 +221,61 @@ export default function Home() {
   const features = [
     {
       icon: Brain,
-      title: "AI Health Assistant",
-      description: "Get personalized health insights powered by advanced AI technology"
+      title: "Cognitive AI Healthcare Engine",
+      description: "Deploy sophisticated machine learning models for predictive diagnostics and clinical decision support with enterprise-grade accuracy"
     },
     {
       icon: Activity,
-      title: "Smart Health Tracking",
-      description: "Monitor your vitals, symptoms, and wellness metrics effortlessly"
+      title: "Real-Time Health Intelligence",
+      description: "Comprehensive patient monitoring with IoT integration, continuous data streams, and advanced biomarker analysis for proactive care"
     },
     {
       icon: Pill,
-      title: "Medication Management",
-      description: "Never miss a dose with intelligent reminder systems"
+      title: "Precision Medication Optimization",
+      description: "AI-driven pharmaceutical management with drug interaction analysis, personalized dosage algorithms, and adherence optimization"
     },
     {
       icon: BarChart2,
-      title: "Advanced Analytics",
-      description: "Visualize your health trends with interactive charts and reports"
+      title: "Enterprise Analytics Suite",
+      description: "Advanced business intelligence dashboards with population health insights, ROI tracking, and outcome measurement analytics"
     },
     {
       icon: CalendarDays,
-      title: "Appointment Scheduling",
-      description: "Keep track of all your medical appointments in one place"
+      title: "Integrated Workflow Management",
+      description: "Streamlined healthcare operations with automated scheduling, resource optimization, and cross-platform care coordination"
     },
     {
       icon: Shield,
-      title: "Privacy First",
-      description: "Your health data is encrypted and completely secure"
+      title: "Enterprise Security & Compliance",
+      description: "HIPAA-compliant infrastructure with zero-trust architecture, end-to-end encryption, and regulatory compliance automation"
     }
   ];
 
   const testimonials = [
     {
-      text: "Health AI transformed how I manage my health. The AI insights are incredibly accurate and helpful.",
-      author: "Sarah Chen",
-      role: "Healthcare Professional"
+      text: "HealthAI Enterprise increased our diagnostic accuracy by 34% and reduced patient readmission rates by 28%. The ROI was evident within the first quarter of implementation.",
+      author: "Dr. Michael Harrison, MD",
+      role: "Chief Medical Officer, Metropolitan Health System"
     },
     {
-      text: "The medication reminders and health tracking features have been life-changing for my chronic condition management.",
-      author: "Michael Rodriguez",
-      role: "Patient"
+      text: "The platform's predictive analytics capabilities transformed our population health management strategy. We're now able to identify at-risk patients 6 months earlier than traditional methods.",
+      author: "Sarah Chen, PhD",
+      role: "VP of Clinical Innovation, Regional Medical Center"
     },
     {
-      text: "As a doctor, I recommend Health AI to my patients. The data visualization helps us make better decisions together.",
-      author: "Dr. Emily Watson",
-      role: "Primary Care Physician"
+      text: "Implementation across our 15-hospital network was seamless. The enterprise support team and white-glove onboarding exceeded our expectations for a technology deployment of this scale.",
+      author: "David Rodriguez",
+      role: "CTO, Nationwide Healthcare Alliance"
     }
   ];
 
   return (
     <>
       <Head>
-        <title>Health AI | AI-Powered Health Management Platform</title>
+        <title>HealthAI Enterprise | Advanced AI-Driven Healthcare Intelligence Platform</title>
         <meta
           name="description"
-          content="Transform your health journey with AI-powered insights, smart tracking, and personalized care management. Join thousands who trust Health AI."
+          content="Enterprise-grade AI-powered healthcare intelligence platform delivering precision diagnostics, predictive analytics, and scalable digital health solutions for healthcare organizations and wellness providers."
         />
       </Head>
       <div className={`${inter.className} font-sans overflow-x-hidden`}>
@@ -293,25 +303,27 @@ export default function Home() {
             <AnimatedInView delay={0}>
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20">
                 <Sparkles className="w-4 h-4 text-yellow-400" />
-                <span className="text-sm font-medium">AI-Powered Health Intelligence</span>
+                <span className="text-sm font-medium">Enterprise-Grade AI Healthcare Intelligence</span>
               </div>
             </AnimatedInView>
             
             <AnimatedInView delay={0.1}>
               <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">
-                Health AI
+                HealthAI Enterprise
               </h1>
             </AnimatedInView>
             <AnimatedInView delay={0.3}>
               <p className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Anything health
+                Precision Healthcare Intelligence
               </p>
             </AnimatedInView>
             
             <AnimatedInView delay={0.4}>
-              <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-                Health AI is building agents that track symptoms, analyze patterns, 
-                and provide personalized health insights on autopilot for hours.
+              <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">
+                Revolutionizing healthcare delivery through advanced machine learning algorithms, 
+                predictive analytics, and scalable digital transformation solutions. 
+                Empowering healthcare organizations with enterprise-grade AI infrastructure 
+                for enhanced patient outcomes and operational excellence.
               </p>
             </AnimatedInView>
             
@@ -319,13 +331,13 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link href={user ? "/home" : "/auth/signUp"}>
                   <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg rounded-full font-semibold shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105">
-                    {user ? "Continue Your Journey" : "Start for Free"}
+                    {user ? "Access Platform" : "Schedule Enterprise Demo"}
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </Link>
-                <Link href="#features">
+                <Link href="#solutions">
                   <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg rounded-full font-semibold backdrop-blur-sm">
-                    Learn More
+                    Explore Solutions
                   </Button>
                 </Link>
               </div>
@@ -333,16 +345,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="features" className="py-24 bg-white">
+        {/* Solutions Section */}
+        <section id="solutions" className="py-24 bg-white">
           <div className="max-w-6xl mx-auto px-4">
             <AnimatedInView delay={0}>
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                  Powerful Features
+                  Enterprise Healthcare Solutions
                 </h2>
-                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  Everything you need to take control of your health journey, powered by cutting-edge AI technology.
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  Comprehensive AI-powered healthcare technology stack designed for scalable deployment across healthcare organizations, delivering measurable ROI and enhanced patient outcomes.
                 </p>
               </div>
             </AnimatedInView>
@@ -369,16 +381,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How It Works */}
-        <section id="how-it-works" className="py-24 bg-gray-50">
+        {/* Platform Architecture */}
+        <section id="platform" className="py-24 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4">
             <AnimatedInView delay={0}>
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                  How It Works
+                  Enterprise Platform Architecture
                 </h2>
-                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  Get started in minutes and transform your health management experience.
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  Scalable, cloud-native infrastructure built for enterprise deployment with seamless integration capabilities and 99.99% uptime SLA.
                 </p>
               </div>
             </AnimatedInView>
@@ -387,18 +399,18 @@ export default function Home() {
               {[
                 {
                   step: "01",
-                  title: "Sign Up & Setup",
-                  description: "Create your account and set up your health profile in under 2 minutes."
+                  title: "Enterprise Integration",
+                  description: "Seamless deployment with existing EHR systems, FHIR compliance, and API-first architecture for rapid implementation."
                 },
                 {
                   step: "02", 
-                  title: "Track & Monitor",
-                  description: "Log your health data, medications, and symptoms with our intuitive interface."
+                  title: "AI Model Training",
+                  description: "Custom machine learning models trained on your organizational data with federated learning and privacy-preserving techniques."
                 },
                 {
                   step: "03",
-                  title: "Get AI Insights",
-                  description: "Receive personalized recommendations and insights from our advanced AI assistant."
+                  title: "Intelligent Automation",
+                  description: "Deploy autonomous AI agents for clinical workflows, predictive analytics, and real-time decision support systems."
                 }
               ].map((item, index) => (
                 <AnimatedInView key={index} delay={0.1 * (index + 1)}>
@@ -415,16 +427,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="py-24 bg-white">
+        {/* Enterprise Case Studies */}
+        <section id="enterprise" className="py-24 bg-white">
           <div className="max-w-6xl mx-auto px-4">
             <AnimatedInView delay={0}>
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                  Trusted by Healthcare Professionals
+                  Trusted by Leading Healthcare Organizations
                 </h2>
-                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                  See what our users and healthcare partners are saying about Health AI.
+                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                  Healthcare systems worldwide rely on HealthAI Enterprise for mission-critical operations, achieving measurable improvements in patient outcomes and operational efficiency.
                 </p>
               </div>
             </AnimatedInView>
@@ -459,10 +471,10 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               {[
-                { number: "10K+", label: "Active Users" },
-                { number: "50K+", label: "Health Logs Tracked" },
-                { number: "99.9%", label: "Uptime" },
-                { number: "24/7", label: "AI Support" }
+                { number: "500+", label: "Healthcare Organizations" },
+                { number: "10M+", label: "Patient Records Processed" },
+                { number: "99.99%", label: "Enterprise SLA Uptime" },
+                { number: "34%", label: "Average Diagnostic Accuracy Improvement" }
               ].map((stat, index) => (
                 <AnimatedInView key={index} delay={0.1 * index}>
                   <div>
@@ -480,18 +492,18 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-4 text-center">
             <AnimatedInView delay={0}>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Ready to Transform Your Health?
+                Ready to Transform Healthcare Delivery?
               </h2>
             </AnimatedInView>
             <AnimatedInView delay={0.1}>
-              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                Join thousands of users who are already managing their health smarter with Health AI.
+              <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Join leading healthcare organizations that have achieved measurable ROI and improved patient outcomes with HealthAI Enterprise. Schedule your executive briefing today.
               </p>
             </AnimatedInView>
             <AnimatedInView delay={0.2}>
               <Link href={user ? "/home" : "/auth/signUp"}>
                 <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-12 py-4 text-lg rounded-full font-semibold shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105">
-                  {user ? "Go to Dashboard" : "Get Started Free"}
+                  {user ? "Access Enterprise Portal" : "Schedule Executive Demo"}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
@@ -505,7 +517,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="mb-4 md:mb-0">
                 <p className="text-gray-600">
-                  © {new Date().getFullYear()} <strong className="text-gray-900">Health AI</strong>. All rights reserved.
+                  © {new Date().getFullYear()} <strong className="text-gray-900">HealthAI Enterprise</strong>. All rights reserved.
                 </p>
               </div>
               <div className="flex items-center gap-6">
